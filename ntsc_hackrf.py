@@ -51,7 +51,7 @@ class ntsc_hackrf(grc_wxgui.top_block_gui):
           
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vff((digital_gain, ))
         self.blocks_float_to_complex_0 = blocks.float_to_complex(1)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_float*1, "/home/ubuntu/sdr-examples/ntsc/ve3irr-testing.dat", True)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_float*1, "/home/ubuntu/WAHD-TV/ve3irr-testing.dat", True)
         self.blocks_add_xx_0 = blocks.add_vcc(1)
         self.band_pass_filter_0 = filter.fir_filter_ccc(1, firdes.complex_band_pass(
         	1, samp_rate, -2475000 + 1725000, 2475000 + 1725000, 500000, firdes.WIN_HAMMING, 6.76))

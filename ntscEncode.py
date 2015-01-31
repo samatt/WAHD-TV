@@ -24,7 +24,7 @@ from array import array
 import math
 import sys 
 #image = Image.open("ve3irr-testing.png")
-image = Image.open("smpte-bars.png")
+image = Image.open("portrait.png")
 pixels = list(image.getdata())
 
 COLOR_FREQ = 3579545.0
@@ -89,6 +89,9 @@ def addPixel(p):
 
 if __name__ == '__main__' :
   print "In python "  + sys.argv[1]
+  if sys.argv[1]:
+    image = Image.open(sys.argv[1])
+    pixels = list(image.getdata())
 
   ntsc_signal = []
 
