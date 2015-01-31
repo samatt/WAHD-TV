@@ -1,4 +1,5 @@
 #!/usr/local/bin/python
+
 # Copyright 2014 Clayton Smith
 #
 # This file is part of sdr-examples
@@ -21,7 +22,7 @@
 from PIL import Image
 from array import array
 import math
-
+import sys 
 #image = Image.open("ve3irr-testing.png")
 image = Image.open("smpte-bars.png")
 pixels = list(image.getdata())
@@ -85,35 +86,40 @@ def addPixel(p):
 
   ntsc_signal += [BLACK_LEVEL + (WHITE_LEVEL - BLACK_LEVEL) * Em]
 
-ntsc_signal = []
 
-# Generate even field
-ntsc_signal += INTERVALS
-for x in range(13):
-  addNonVisibleLine()
-for line in range(0,480,2):
-  ntsc_signal += SYNCH_PULSE
-  addBackPorch()
-  for x in range(line * 640, (line+1) * 640):
-    addPixel(pixels[x])
-  ntsc_signal += FRONT_PORCH
-addFirstHalfFrame()
+if __name__ == '__main__' :
+  print "In python "  + sys.argv[1]
 
-# Generate odd field
-ntsc_signal += INTERVALS + EXTRA_HALF_LINE
-for x in range(12):
-  addNonVisibleLine()
-addSecondHalfFrame()
-for line in range(1,481,2):
-  ntsc_signal += SYNCH_PULSE
-  addBackPorch()
-  for x in range(line * 640, (line+1) * 640):
-    addPixel(pixels[x])
-  ntsc_signal += FRONT_PORCH
+  ntsc_signal = []
 
-ntsc_signal = [0.75 - (0.25/40) * x for x in ntsc_signal]
+  # Generate even field
+  ntsc_signal += INTERVALS
+  for x in range(13):
+    addNonVisibleLine()
+  for line in range(0,480,2):
+    ntsc_signal += SYNCH_PULSE
+    addBackPorch()
+    for x in range(line * 640, (line+1) * 640):
+      addPixel(pixels[x])
+    ntsc_signal += FRONT_PORCH
+  addFirstHalfFrame()
 
-f = open('ve3irr-testing.dat', 'wb')
-ntsc_array = array('f', ntsc_signal)
-ntsc_array.tofile(f)
-f.close()
+  # Generate odd field
+  ntsc_signal += INTERVALS + EXTRA_HALF_LINE
+  for x in range(12):
+    addNonVisibleLine()
+  addSecondHalfFrame()
+  for line in range(1,481,2):
+    ntsc_signal += SYNCH_PULSE
+    addBackPorch()
+    for x in range(line * 640, (line+1) * 640):
+      addPixel(pixels[x])
+    ntsc_signal += FRONT_PORCH
+
+  ntsc_signal = [0.75 - (0.25/40) * x for x in ntsc_signal]
+
+  f = open('ve3irr-testing.dat', 'wb')
+  ntsc_array = array('f', ntsc_signal)
+  ntsc_array.tofile(f)
+  f.close()
+  print "generated ve3irr-testing.dat "
